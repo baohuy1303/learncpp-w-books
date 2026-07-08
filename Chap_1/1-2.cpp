@@ -118,5 +118,57 @@ int main(){
     print_fixed(std_arr);
     std::vector<int> vector_arr = {1, 2, 3, 4};
     print_dynamic(vector_arr);
+
+    // L9: Multi-dimensional Arrays
+    std::cout << "Multi-dimensional Arrays:" << std::endl;
+    // Static 2D array
+    int matrix[3][4];
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            matrix[i][j] = i * 10 + j;
+        }
+        
+    }
+    std::cout << matrix[1][2] << std::endl; //1
+    std::cout << *(*(matrix + 1) + 2) << std::endl; //2
+    
+    // Dynamic 2D array
+    int **matrix_dynamic = new int*[3];
+    for (size_t i = 0; i < 3; i++)
+    {
+        matrix_dynamic[i] = new int[4];
+    }
+    matrix_dynamic[1][2] = 12;
+    std::cout << matrix_dynamic[1][2] << std::endl; //3
+
+    for (size_t i = 0; i < 3; i++)
+    {
+        delete[] matrix_dynamic[i];
+    }
+    delete[] matrix_dynamic;
+
+    // Contiguous Dynamic 2D array
+    int* cont_matrix = new int[3 * 4];
+    int rows = 3, cols = 4;
+    cont_matrix[1 * cols + 2] = 12; // cont_matrix[1][2]
+
+    auto at = [&](int r, int c) -> int&{
+        return cont_matrix[r * cols + c];
+    }; // & behind a type means reference. because the each element is an int, we ref the int by using int&.
+    // if dont ref then it's a copy, not the original value.
+
+    at(1, 2) = 12;
+    std::cout << at(1, 2) << std::endl; //4
+    delete[] cont_matrix;
+
+    // Modern 2D array
+    std::vector <std::vector <int>> vector_matrix(3, std::vector<int>(4));
+    vector_matrix[1][2] = 12;
+    std::cout << vector_matrix[1][2] << std::endl; //5
+
+    // L10: Const and Pointers
+
 }
 
