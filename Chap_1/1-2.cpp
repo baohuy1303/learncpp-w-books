@@ -1,0 +1,122 @@
+#include <iostream>
+#include <array>
+#include <vector>
+using namespace std;
+
+/*
+Stack size is limited. Heap is large but slower.
+void* is generic ptr. can point to any. need to cast before dereference
+*/
+
+// --- L8 ---
+void func_1(int arr[]){
+    std::cout << sizeof(arr) << std::endl;
+}
+void func_2(int* arr, size_t size){
+    int sum = 0;
+    for ( int i = 0; i < size; i++)
+    {
+        sum += arr[i];
+    }
+    
+    std::cout << sum << std::endl;
+}
+template<size_t N>
+void process(int (&arr)[N]){
+    int sum = 0;
+    for ( int i = 0; i < N; i++)
+    {
+        sum += arr[i];
+    }
+    
+    std::cout << sum << std::endl;
+}
+
+// --- L8.2 ---
+void print_fixed(const std::array<int, 4> &arr){
+    int sum = 0;
+    for (int i = 0; i < arr.size(); i++)
+    {
+        sum += arr[i];
+    }
+    
+    std::cout << sum << std::endl;
+}
+void print_dynamic(const std::vector<int> &arr){
+    int sum = 0;
+    for (int i = 0; i < arr.size(); i++)
+    {
+        sum += arr[i];
+    }
+    for (int num: arr){
+        sum += num;
+    }
+    
+    std::cout << sum << std::endl;
+}
+
+int main(){
+    // L1: Intro
+    int health = 100;
+    int *ptr = &health;
+    std::cout << ptr << std::endl;
+
+    // L2: Dereferencing
+    int gold = 50;
+    int *ptr_gold = &gold;
+    *ptr_gold = 100;
+    std::cout << gold << "\n";
+
+    // L3: Heap
+    int *heap_ptr = new int(42);
+    std::cout << *heap_ptr << std::endl;
+    delete heap_ptr;
+
+    // L4: Void ptr
+    void *void_ptr;
+    double a = 3.14;
+    void_ptr = &a;
+    std::cout << *static_cast<double*>(void_ptr) << std::endl; // inside <> is the type we want to cast to
+
+    // L5: Pointer size type
+    char b = 'b';
+    char *ptr_b = &b;
+    std::cout << sizeof(void_ptr) << std::endl;
+    std::cout << sizeof(ptr)<< std::endl;
+    std::cout << sizeof(ptr_b) << std::endl;
+
+    // L6: Arrays and Pointer Arithmetic
+    // arr is equivalent to &arr[0]; *arr is equivalent to arr[0]
+    // arr is a constant pointer, always pointing to the 1st element i.e: cant be re-assigned. But pointers to the arr can point to any elements and diff arrs.
+    int int_arr[3] = {10, 20, 30};
+    int *arr_ptr = int_arr; // cant do: &int_arr because that will give address of the entire block -> mismatch type int* != int(*)[3]
+    std::cout << *(arr_ptr+1) << std::endl;
+
+    // L7: Dynamic Arrays (heap)
+    int *heap_arr = new int[5];
+    heap_arr[0] = 10;
+    heap_arr[1] = 20;
+    heap_arr[2] = 30;
+    heap_arr[3] = 40;
+    heap_arr[4] = 50;
+    for(int i = 0; i < 5; i++){
+        std::cout << heap_arr[i] << std::endl;
+    }
+    delete[] heap_arr;
+
+    // L8: Passing Arrays to Functions
+    int test_arr[4] = {10, 20, 30, 40};
+    std::cout << sizeof(test_arr) << std::endl;
+    func_1(test_arr);
+    func_2(test_arr, 4);
+    process(test_arr);
+
+    // L8.2: Modern Array
+    // std::array<T, N>: used if size N is known. Else use: std::vector<T> for dynamic arrays (T is type)
+    std::cout << "Modern arrays:" << std::endl;
+    std::array<int, 4> std_arr = {1, 2, 3, 4};
+    print_fixed(std_arr);
+    std::vector<int> vector_arr = {1, 2, 3, 4};
+    print_dynamic(vector_arr);
+}
+
